@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "359643655989",
+    "firebase_url": "https://sheikhismailalkurdi-2ffea-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "sheikhismailalkurdi-2ffea",
+    "storage_bucket": "sheikhismailalkurdi-2ffea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359643655989:android:0c23cbb3289da008a7667c",
+        "android_client_info": {
+          "package_name": "com.kurdi.sheikhismailalkurdi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359643655989-oemgn14g02ogdv5s19eq8kje5lbavitr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSzhWOqXs3N_VJa2-Z3mop378ujWcLz14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359643655989-oemgn14g02ogdv5s19eq8kje5lbavitr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "359643655989-03rdrl93t5fisrhdfgbjbtcaccnb9ion.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kurdi.sheikhismailalkurdi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
