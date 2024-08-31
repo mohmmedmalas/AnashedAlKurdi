@@ -1,5 +1,6 @@
 import 'package:bookapp/configuration/theme.dart';
 import 'package:bookapp/contant/pdfViewerPage.dart';
+import 'package:bookapp/contant/pdfViewerPageMauled.dart';
 import 'package:flutter/material.dart';
 
 import '../commenwidget/customAppBar.dart';
@@ -74,9 +75,12 @@ class _FilesPageMauledState extends State<FilesPageMauled> {
     );
   }
   void _openPdf({required assetPath,required title , required int index}) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewerPage(
-        assetPath:assetPath ,
-        title:title ,
+    Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewerPageMauled(
+        // assetPath:assetPath ,
+        // title:title ,
+        itemList: pdfFiles,
+        index: index,
+          // item: pdfFiles[index],
     )));
   }
 }

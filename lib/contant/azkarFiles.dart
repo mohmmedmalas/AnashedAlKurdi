@@ -23,7 +23,7 @@ class _AzkarFilePageState extends State<AzkarFilePage> {
     },
     {
       'title': 'سورة الواقعة مع وردها',
-      'assetPath': 'assets/pdfFiles/file10N.pdf',
+      'assetPath': 'assets/pdfFiles/file10NN.pdf',
     },
     {
       'title': 'سورة الملك',
@@ -34,8 +34,6 @@ class _AzkarFilePageState extends State<AzkarFilePage> {
       'assetPath': 'assets/pdfFiles/file12.pdf',
     },
   ];
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +72,12 @@ class _AzkarFilePageState extends State<AzkarFilePage> {
       ),
     );
   }
+
   void _openPdf({required assetPath,required title}) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewerPage(
         assetPath:assetPath ,
         title:title ,
     )));
   }
+
 }

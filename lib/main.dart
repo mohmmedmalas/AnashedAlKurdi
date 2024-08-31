@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
 
-      RemoteMessage? messageTemp = await FirebaseMessaging.instance.getInitialMessage();
+    RemoteMessage? messageTemp = await FirebaseMessaging.instance.getInitialMessage();
 
       print("onMessageOpenedApp: $message");
       if(message.data["url"] != null){

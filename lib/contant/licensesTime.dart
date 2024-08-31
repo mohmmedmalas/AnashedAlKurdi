@@ -29,122 +29,236 @@ class _LicensesTimeState extends State<LicensesTime> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'مواعيد الدروس:',
-                  style: ourTextStyle(fontSize: 20),
-                ),
-                SizedBox(height: size_H(20)),
-                Text(
-                  'ـ مجلس اللطيفية ودرس الشمائل المحمدية ودرس شرح الحكم العطائية - كل ثلاثاء - بعد صلاة العشاء ( زاوية الصريح )',
-                  style: ourTextStyle(fontSize: 16),
-                ),
-                SizedBox(height: size_H(10)),
-                Text(
-                  'ـ  مجلس الصلاة على النبي صلى الله عليه وسلم ودرس شرح الحكم الغوثية - كل جمعة - بعد صلاة العصر (زاوية الصريح )',
-                  style: ourTextStyle(fontSize: 16),
-                ),
-                SizedBox(height: size_H(10)),
-                Text(
-                  'ـ مجلس الصلاة والسلام على سيدنا محمد ﷺ ودرس كتاب مفتاح الفلاح ومصباح الأرواح - كل سبت - للإمام ابن عطاء الله السكندري (زاوية المفرق )',
-                  style: ourTextStyle(fontSize: 16),
-                ),
-
-                SizedBox(height: size_H(10)),
-                Text(
-                  'ـ مجلس الصلاة والسلام على سيدنا محمد ﷺ ودرس حقائق عن التصوف - كل أحد - بعد العشاء مباشرة (زاوية عمان )',
-                  style: ourTextStyle(fontSize: 16),
-                ),
-                SizedBox(height: size_H(10)),
-                // Text(
-                //   'ـ اي مجالس اخرى يعلن عنها على الصفحة - تابعونا.',
-                //   style: ourTextStyle(),
-                // ),
-                SizedBox(height: size_H(20)),
-                Text(
-                  'عناوين المجالس',
-                  style: ourTextStyle(fontSize: 20),
-                ),
-                SizedBox(height: size_H(20)),
-                Text(
-                  '- زاوية الصريح : مسجد الشيخ محمد سعيد الكردي رحمه الله تعالى - اربد',
-                  style: ourTextStyle(fontSize: 16),
-                ),
-                SizedBox(height: size_H(5)),
-                GestureDetector(
-                  onTap: () {
-                    if(!Platform.isAndroid){
-                      openMapsSheet(context, latitude:  32.4988250 , longitude:  35.8897983 );
-                    }else{
-                      launch('https://bit.ly/3vQmnxQ');
-                    }
-
-                  },
-                  child: Text(
-                    'https://bit.ly/3vQmnxQ',
-                    style:  ourTextStyle(color: Colors.blue),
-                  ),
-                ),
-                SizedBox(height: size_H(10)),
-                Text(
-                  '- زاوية عمان : دار الذكر و الاحسان - ضاحية الرشيد',
-                  style: ourTextStyle(fontSize: 16),
-                ),
-                SizedBox(height: size_H(5)),
-                GestureDetector(
-                  onTap: () {
-                    // launch('https://pxl.to/67a86o');
-
-                    if(!Platform.isAndroid){
-                      openMapsSheet(context, latitude:  32.0184326 , longitude:  35.8850102 );
-                    }else{
-                      launch('https://pxl.to/67a86o');
-                    }
-
-                  },
-                  child: Text(
-                    'https://pxl.to/67a86o',
-                    style: ourTextStyle(color: Colors.blue),
-                  ),
-                ),
-
-                SizedBox(height: size_H(10)),
-                Text(
-                  '- زاوية المفرق : مسجد خليل الرحمن - المفرق',
-                  style: ourTextStyle(fontSize: 16),
-                ),
-                SizedBox(height: size_H(5)),
-                GestureDetector(
-                  onTap: () {
-                    // launch('https://maps.app.goo.gl/cygGPv7rf7XKJpLYA');
-
-
-                    if(!Platform.isAndroid){
-                      openMapsSheet(context, latitude:  32.3427870 , longitude:  36.2034049 );
-                    }else{
-                      launch('https://maps.app.goo.gl/cygGPv7rf7XKJpLYA');
-                    }
-
-                  },
-                  child: Text(
-                    'https://maps.app.goo.gl/cygGPv7rf7XKJpLYA',
-                    style: ourTextStyle(color: Colors.blue),
-                  ),
-                ),
-
-
-                // Expanded(child: Center(child: Image.asset(ImagePath.qubah3 , height: size_H(85),)))
-
-              ],
-            ),
+            child: buildColumnNew(context),
+            // child: buildColumnOLD(context),
           ),
         ),
       )
     );
   }
 
+  Column buildColumnNew(BuildContext context) {
+    return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'مواعيد المجالس:',
+                style: ourTextStyle(fontSize: 20),
+              ),
+              SizedBox(height: size_H(20)),
+              Text(
+                'ـ مجلس الذكر و درس شرح الحكم الغوثية - كل جمعة - بعد العصر - الصريح',
+                style: ourTextStyle(fontSize: 16),
+              ),
+              SizedBox(height: size_H(10)),
+              Text(
+                'ـ مجلس اللطيفية وشرح الحكم العطائية - كل ثلاثاء - بعد العشاء - الصريح',
+                style: ourTextStyle(fontSize: 16),
+              ),
+
+              SizedBox(height: size_H(10)),
+              Text(
+                'ـ مجلس الذكر وشرح حقائق عن التصوف - كل أحد - بعد العشاء - عمان',
+                style: ourTextStyle(fontSize: 16),
+              ),
+              SizedBox(height: size_H(10)),
+              // Text(
+              //   'ـ اي مجالس اخرى يعلن عنها على الصفحة - تابعونا.',
+              //   style: ourTextStyle(),
+              // ),
+              SizedBox(height: size_H(20)),
+              Text(
+                'عناوين المجالس:',
+                style: ourTextStyle(fontSize: 20),
+              ),
+              SizedBox(height: size_H(20)),
+              Text(
+                '- زاوية الصريح : مسجد الشيخ محمد سعيد الكردي رحمه الله تعالى - اربد',
+                style: ourTextStyle(fontSize: 16),
+              ),
+              SizedBox(height: size_H(5)),
+              GestureDetector(
+                onTap: () {
+                  if(!Platform.isAndroid){
+                    openMapsSheet(context, latitude:  32.4988250 , longitude:  35.8897983 );
+                  }else{
+                    launch('https://maps.app.goo.gl/5YdnTqTNqsRce5CF9');
+                  }
+
+                },
+                child: Text(
+                  'https://maps.app.goo.gl/5YdnTqTNqsRce5CF9',
+                  style:  ourTextStyle(color: Colors.blue),
+                ),
+              ),
+              SizedBox(height: size_H(10)),
+              Text(
+                '- زاوية عمان : دار الذكر و الاحسان - ضاحية الرشيد',
+                style: ourTextStyle(fontSize: 16),
+              ),
+              SizedBox(height: size_H(5)),
+              GestureDetector(
+                onTap: () {
+                  // launch('https://pxl.to/67a86o');
+
+                  if(!Platform.isAndroid){
+                    openMapsSheet(context, latitude:  32.0184326 , longitude:  35.8850102 );
+                  }else{
+                    launch('https://maps.app.goo.gl/L2yD8UhEa6nbL51X6');
+                  }
+
+                },
+                child: Text(
+                  'https://maps.app.goo.gl/L2yD8UhEa6nbL51X6',
+                  style: ourTextStyle(color: Colors.blue),
+                ),
+              ),
+
+              SizedBox(height: size_H(10)),
+              // Text(
+              //   '- زاوية المفرق : مسجد خليل الرحمن - المفرق',
+              //   style: ourTextStyle(fontSize: 16),
+              // ),
+              // SizedBox(height: size_H(5)),
+              // GestureDetector(
+              //   onTap: () {
+              //     // launch('https://maps.app.goo.gl/cygGPv7rf7XKJpLYA');
+              //
+              //
+              //     if(!Platform.isAndroid){
+              //       openMapsSheet(context, latitude:  32.3427870 , longitude:  36.2034049 );
+              //     }else{
+              //       launch('https://maps.app.goo.gl/cygGPv7rf7XKJpLYA');
+              //     }
+              //
+              //   },
+              //   child: Text(
+              //     'https://maps.app.goo.gl/cygGPv7rf7XKJpLYA',
+              //     style: ourTextStyle(color: Colors.blue),
+              //   ),
+              // ),
+
+
+              // Expanded(child: Center(child: Image.asset(ImagePath.qubah3 , height: size_H(85),)))
+
+            ],
+          );
+  }
+
+  ///
+  // Column buildColumnOLD(BuildContext context) {
+  //   return Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               'مواعيد الدروس:',
+  //               style: ourTextStyle(fontSize: 20),
+  //             ),
+  //             SizedBox(height: size_H(20)),
+  //             Text(
+  //               'ـ مجلس اللطيفية ودرس الشمائل المحمدية ودرس شرح الحكم العطائية - كل ثلاثاء - بعد صلاة العشاء ( زاوية الصريح )',
+  //               style: ourTextStyle(fontSize: 16),
+  //             ),
+  //             SizedBox(height: size_H(10)),
+  //             Text(
+  //               'ـ  مجلس الصلاة على النبي صلى الله عليه وسلم ودرس شرح الحكم الغوثية - كل جمعة - بعد صلاة العصر (زاوية الصريح )',
+  //               style: ourTextStyle(fontSize: 16),
+  //             ),
+  //             SizedBox(height: size_H(10)),
+  //             Text(
+  //               'ـ مجلس الصلاة والسلام على سيدنا محمد ﷺ ودرس كتاب مفتاح الفلاح ومصباح الأرواح - كل سبت - للإمام ابن عطاء الله السكندري (زاوية المفرق )',
+  //               style: ourTextStyle(fontSize: 16),
+  //             ),
+  //
+  //             SizedBox(height: size_H(10)),
+  //             Text(
+  //               'ـ مجلس الصلاة والسلام على سيدنا محمد ﷺ ودرس حقائق عن التصوف - كل أحد - بعد المغرب مباشرة (زاوية عمان )',
+  //               style: ourTextStyle(fontSize: 16),
+  //             ),
+  //             SizedBox(height: size_H(10)),
+  //             // Text(
+  //             //   'ـ اي مجالس اخرى يعلن عنها على الصفحة - تابعونا.',
+  //             //   style: ourTextStyle(),
+  //             // ),
+  //             SizedBox(height: size_H(20)),
+  //             Text(
+  //               'عناوين المجالس',
+  //               style: ourTextStyle(fontSize: 20),
+  //             ),
+  //             SizedBox(height: size_H(20)),
+  //             Text(
+  //               '- زاوية الصريح : مسجد الشيخ محمد سعيد الكردي رحمه الله تعالى - اربد',
+  //               style: ourTextStyle(fontSize: 16),
+  //             ),
+  //             SizedBox(height: size_H(5)),
+  //             GestureDetector(
+  //               onTap: () {
+  //                 if(!Platform.isAndroid){
+  //                   openMapsSheet(context, latitude:  32.4988250 , longitude:  35.8897983 );
+  //                 }else{
+  //                   launch('https://bit.ly/3vQmnxQ');
+  //                 }
+  //
+  //               },
+  //               child: Text(
+  //                 'https://bit.ly/3vQmnxQ',
+  //                 style:  ourTextStyle(color: Colors.blue),
+  //               ),
+  //             ),
+  //             SizedBox(height: size_H(10)),
+  //             Text(
+  //               '- زاوية عمان : دار الذكر و الاحسان - ضاحية الرشيد',
+  //               style: ourTextStyle(fontSize: 16),
+  //             ),
+  //             SizedBox(height: size_H(5)),
+  //             GestureDetector(
+  //               onTap: () {
+  //                 // launch('https://pxl.to/67a86o');
+  //
+  //                 if(!Platform.isAndroid){
+  //                   openMapsSheet(context, latitude:  32.0184326 , longitude:  35.8850102 );
+  //                 }else{
+  //                   launch('https://pxl.to/67a86o');
+  //                 }
+  //
+  //               },
+  //               child: Text(
+  //                 'https://pxl.to/67a86o',
+  //                 style: ourTextStyle(color: Colors.blue),
+  //               ),
+  //             ),
+  //
+  //             SizedBox(height: size_H(10)),
+  //             Text(
+  //               '- زاوية المفرق : مسجد خليل الرحمن - المفرق',
+  //               style: ourTextStyle(fontSize: 16),
+  //             ),
+  //             SizedBox(height: size_H(5)),
+  //             GestureDetector(
+  //               onTap: () {
+  //                 // launch('https://maps.app.goo.gl/cygGPv7rf7XKJpLYA');
+  //
+  //
+  //                 if(!Platform.isAndroid){
+  //                   openMapsSheet(context, latitude:  32.3427870 , longitude:  36.2034049 );
+  //                 }else{
+  //                   launch('https://maps.app.goo.gl/cygGPv7rf7XKJpLYA');
+  //                 }
+  //
+  //               },
+  //               child: Text(
+  //                 'https://maps.app.goo.gl/cygGPv7rf7XKJpLYA',
+  //                 style: ourTextStyle(color: Colors.blue),
+  //               ),
+  //             ),
+  //
+  //
+  //             // Expanded(child: Center(child: Image.asset(ImagePath.qubah3 , height: size_H(85),)))
+  //
+  //           ],
+  //         );
+  // }
+  ///
   openMapsSheet(context, {required double latitude,required double longitude}) async {
     try {
       final coords = launcher.Coords(latitude, longitude);

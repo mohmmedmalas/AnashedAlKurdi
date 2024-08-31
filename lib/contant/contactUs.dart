@@ -35,17 +35,17 @@ class _ContactUSState extends State<ContactUS> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            BoxWidgetLine(
-              box: Boxes(
-                name: "contact us 1".trn(),
-                onTap: () {
-                  onTap();
-                },
-
-              ),
-            ),
-            
-            SizedBox(height: size_H(20)),
+            // BoxWidgetLine(
+            //   box: Boxes(
+            //     name: "contact us 1".trn(),
+            //     onTap: () {
+            //       onTap();
+            //     },
+            //
+            //   ),
+            // ),
+            ///
+            // SizedBox(height: size_H(20)),
 
             BoxWidgetLine(
               box: Boxes(
@@ -66,23 +66,7 @@ class _ContactUSState extends State<ContactUS> {
               box: Boxes(
                 name: "لدي طلب آخر".trn(),
                 onTap: () async {
-                  if(Platform.isAndroid){
-                    launch('https://m.me/SheikhIsmailAlKurdi'); // Replace {USER_ID} with the recipient's user ID or username
-
-                  } else {
-                    final String facebookUrlScheme = 'fb://profile/100052831813876'; // Replace 'your_facebook_id' with the actual ID or username
-
-                    try {
-                      bool launched = await launchUrl(Uri.parse(facebookUrlScheme));
-                      if (!launched) {
-                        // If the app is not installed, open the web browser
-                        await launchUrl(Uri.parse('https://www.facebook.com/100052831813876') , mode: LaunchMode.externalApplication,); // Replace 'your_facebook_id' with the actual ID or username
-                      }
-                    } catch (e) {
-                      // Handle error
-                      print(e.toString());
-                    }
-                  }
+                  await openmessenger();
 
                 },
 
@@ -318,13 +302,19 @@ class _ContactUSState extends State<ContactUS> {
                  'لسلوك طريقة تربية النفس وتهذيبها تحقيقا لكمال العبودية لله مع الالتزام بالاوراد اليومية بالجد و الاجتهاد والمحافظة على اعمال الخير و الاستقامة على امر الله وتعظيم للشريعة المطهرة و السنة النبوية المعظمة بتوجيه من فضيلة الشيخ المربي اسماعيل الكردي كما اخذها عن شيوخه بالسند المتصل لرسول الله صلى الله عليه وسلم و المسماه الطريقة الشاذلية.',
                  style: ourTextStyle(),
                ),
-               SizedBox(height: 10),
+               ///
+               // SizedBox(height: 10),
+               ///
                GestureDetector(
-                 onTap: () {
-                   launch('https://bit.ly/3QhnaiX');
+                 onTap: () async {
+                   // launch('https://bit.ly/3QhnaiX');
+                   await openmessenger();
+
+
                  },
                  child: Text(
-                   'يرجى الضغط هنا وتعبئة المعلومات المطلوبة لاخذ الطريقة',
+                   'يرجى الضغط هنا والتواصل مع صفحة الفيس بوك لأخذ الطريقة',
+                   // 'يرجى الضغط هنا وتعبئة المعلومات المطلوبة لاخذ الطريقة',
                    // style: TextStyle(
                    //   fontSize: 16,
                    //   color: Colors.blue,
@@ -347,6 +337,26 @@ class _ContactUSState extends State<ContactUS> {
        );
      },
    );
+ }
+
+ Future<void> openmessenger() async {
+   if(Platform.isAndroid){
+     launch('https://m.me/SheikhIsmailAlKurdi'); // Replace {USER_ID} with the recipient's user ID or username
+
+   } else {
+     final String facebookUrlScheme = 'fb://profile/100052831813876'; // Replace 'your_facebook_id' with the actual ID or username
+
+     try {
+       bool launched = await launchUrl(Uri.parse(facebookUrlScheme));
+       if (!launched) {
+         // If the app is not installed, open the web browser
+         await launchUrl(Uri.parse('https://www.facebook.com/100052831813876') , mode: LaunchMode.externalApplication,); // Replace 'your_facebook_id' with the actual ID or username
+       }
+     } catch (e) {
+       // Handle error
+       print(e.toString());
+     }
+   }
  }
 
 
