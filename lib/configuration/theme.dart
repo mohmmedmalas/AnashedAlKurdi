@@ -1,6 +1,6 @@
 import 'dart:typed_data';
-// import 'package:bookapp/configuration/size_config.dart';
-import 'package:bookapp/configuration/size_config.dart';
+// import 'package:nasheedapp/configuration/size_config.dart';
+import 'package:nasheedapp/configuration/size_config.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 
@@ -20,6 +20,7 @@ import '../main.dart';
 class Theme_Information {
 
 
+  // static Color Primary_Color  = Color(0xff1B5920);
   static Color Primary_Color  = Color(0xff309F24);
 
 
@@ -47,9 +48,9 @@ class Theme_Information {
 }
 
 
-extension Translation on String {
-  String trn() => translator.translate(this);
-}
+// extension Translation on String {
+//   String trn() => tr();
+// }
 
 
 void hide_keyboard(context){
@@ -60,14 +61,11 @@ TextStyle ourTextStyle({Color? color, double? fontSize ,FontWeight?  fontWeight 
   color ??= Colors.black;
   fontSize ??= size_H(13);
   fontWeight ??= FontWeight.normal;
-  if(translator.activeLanguageCode == 'ar'){
+  // if(translator.activeLanguageCode == 'ar'){
     return TextStyle(color:  color ,fontWeight:  fontWeight,  fontSize:  size_H(fontSize));
-    // return GoogleFonts.readexPro(color:  color ,fontWeight:  fontWeight, fontSize:  size_H(fontSize));
-  } else{
-    return TextStyle(color:  color ,fontWeight:  fontWeight, fontSize:  size_H(fontSize));
-    // return GoogleFonts.aBeeZee(color:  color ,fontWeight:  fontWeight, fontSize:  size_H(fontSize));
-  }
-  //
+  // } else{
+  //   return TextStyle(color:  color ,fontWeight:  fontWeight, fontSize:  size_H(fontSize));
+  // }
 }
 
 

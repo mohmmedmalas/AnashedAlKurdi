@@ -1,21 +1,34 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nasheedapp/provider.dart';
 
-import 'package:bookapp/starting/splashScreen.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+import 'package:nasheedapp/starting/splashScreen.dart';
+// import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
 import 'configuration/size_config.dart';
 import 'configuration/theme.dart';
+import 'contant/pdfViewerPage.dart';
+import 'model/generalFireBaseList.dart';
+
+
+//   /Users/mohmmed/Desktop/flutter_3.24.0/bin/flutter pub add firebase_auth
+
+
+
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 SharedPreferences? loginDataHistory;
 
 int countPrivet = 0;
@@ -25,13 +38,20 @@ Future<void> main() async {
   await Firebase.initializeApp();
   loginDataHistory = await SharedPreferences.getInstance();
 
-  await translator.init(
-    language: 'ar' ,
-    languagesList: <String>['ar'],
-    assetsDirectory: 'assets/langs/',
+  await LocalizeAndTranslate.init(
+    assetLoader: const AssetLoaderRootBundleJson('assets/lang'),
+    supportedLanguageCodes: const <String>['ar', 'en'],
   );
 
-  runApp(MyApp());
+  //
+  // runApp(MyApp());
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ActiveFileService(),
+      child: MyApp(),
+    ),
+  );
 
 }
 
@@ -60,50 +80,8 @@ class _MyAppState extends State<MyApp> {
     });
 
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-
-    RemoteMessage? messageTemp = await FirebaseMessaging.instance.getInitialMessage();
-
-      print("onMessageOpenedApp: $message");
-      if(message.data["url"] != null){
-        print("onMessageOpenedApp: ${message.data["url"]}");
-        launchUrl(Uri.parse(message.data["url"]) , mode: LaunchMode.externalApplication,); // Replace with your Instagram URL
-      }
-
-       else  if(messageTemp != null && messageTemp.data["url"] != null){
-        print("onMessageOpenedApp: ${messageTemp.data["url"]}");
-        launchUrl(Uri.parse(messageTemp.data["url"]) , mode: LaunchMode.externalApplication,); // Replace with your Instagram URL
-      }
-
-    });
-
-    // FirebaseMessaging.instance.getToken().then((value) {
-    //   // String token = value;
-    //   loginDataHistory!.setString('fcmToken', '$value');
-    //   print("token = $value");
-    // });
-
 ///
-    Future.delayed(const Duration(seconds:1), () async {
-      FirebaseMessaging.instance.getToken().then((value) async {
-        loginDataHistory!.setString('fcmToken', '$value');
-        FirebaseMessaging.instance.subscribeToTopic("all");
-        print("token = $value");
-      });
-    });
 ///
-
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   print('Got a message whilst in the foreground!');
-    //   print('Message data: ${message.data}');
-    //
-    //   if (message.notification != null) {
-    //     print('Message also contained a notification: ${message.notification}');
-    //   }
-    // });
-
 
 
   }
@@ -111,11 +89,11 @@ class _MyAppState extends State<MyApp> {
 
 
 
+
+
+
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
-
-
     return LayoutBuilder(
       builder: (context, constraints) {
         return OrientationBuilder(
@@ -123,23 +101,59 @@ class _MyAppState extends State<MyApp> {
             SizeConfig().init(constraints, orientation);
             return MaterialApp(
                 // builder: EasyLoading.init(),
-                localizationsDelegates: translator.delegates,
-                locale: translator.activeLocale,
+                scaffoldMessengerKey: rootScaffoldMessengerKey,
+                localizationsDelegates: context.delegates,
+                locale: context.locale,
                 debugShowCheckedModeBanner: false,
                 title: 'زاوية الكردي',
                 theme: ThemeData(
                   fontFamily: 'calibri',
-                  backgroundColor: Theme_Information.Primary_Color,
+                  scaffoldBackgroundColor: Theme_Information.Color_1,
+
                   // primarySwatch: Theme_Information.Primary_Color,
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                 ),
-                home: SplashScreen()
+              // home: StreamBuilder<GeneralFireBaseList?>(
+              //   stream: activeFileStream(),
+              //   builder: (context, snapshot) {
+              //     final activeFile = snapshot.data;
+              //
+              //     return Stack(
+              //       children: [
+              //         SplashScreen(), // or your main home screen widget
+              //
+              //         // Show popup overlay only if we have an active file
+              //         if (activeFile != null)
+              //           ActiveFilePopup(pdfFile: activeFile),
+              //       ],
+              //     );
+              //   },
+              // ),
+///
+    home: SplashScreen(),
              );
           },
         );
       },
     );
+  ///
+
+
   }
+
+  // Stream<GeneralFireBaseList?> activeFileStream() {
+  //   return FirebaseFirestore.instance
+  //       .collection('ActiveFiles')
+  //       .doc('current')
+  //       .snapshots()
+  //       .map((snapshot) {
+  //     if (snapshot.exists && snapshot.data() != null) {
+  //       return GeneralFireBaseList.fromMap(snapshot.data()!);
+  //     }
+  //     return null;
+  //   });
+  // }
+
 
   Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     print("onBackgroundMessage: $message");
@@ -148,7 +162,7 @@ class _MyAppState extends State<MyApp> {
 
   String? getCountryCode(BuildContext context) {
     // Use the Localizations to get the locale of the device
-    Locale locale = translator.activeLocale;
+    Locale locale = context.locale;
     // Locale locale = Localizations.localeOf(context);
 
     // The country code is available in the countryCode property
@@ -157,25 +171,7 @@ class _MyAppState extends State<MyApp> {
   }
 
 
-  Future<String> getDeviceName() async {
-    String deviceName = '';
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-    try {
-      if (Platform.isAndroid) {
-        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-        deviceName = androidInfo.model;
-      } else if (Platform.isIOS) {
-        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-        deviceName = iosInfo.name;
-      }
-    } catch (e) {
-      // Handle any exceptions that might occur while fetching device info
-      print('Error getting device name: $e');
-    }
-
-    return deviceName;
-  }
 
   void saveDataToFirebase({required String token,required String deviceName,required String countryCode}) {
     // String token = 'your_token_here'; // Replace this with the actual token

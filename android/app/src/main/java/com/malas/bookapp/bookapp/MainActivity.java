@@ -1,4 +1,4 @@
-package com.kurdi.sheikhismailalkurdi;
+package com.kurdi.nasheed;
 
 import io.flutter.embedding.android.FlutterActivity;
 

@@ -8,17 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:359643655989:android:0c23cbb3289da008a7667c",
+        "mobilesdk_app_id": "1:359643655989:android:f5413c783b093393a7667c",
         "android_client_info": {
-          "package_name": "com.kurdi.sheikhismailalkurdi"
+          "package_name": "com.kurdi.nasheed"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "359643655989-oemgn14g02ogdv5s19eq8kje5lbavitr.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyDSzhWOqXs3N_VJa2-Z3mop378ujWcLz14"
@@ -28,14 +23,64 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "359643655989-oemgn14g02ogdv5s19eq8kje5lbavitr.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "359643655989-03rdrl93t5fisrhdfgbjbtcaccnb9ion.apps.googleusercontent.com",
+              "client_id": "359643655989-cj9k2ntedohpuhvitev2bpspvfm53gmv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.kurdi.sheikhismailalkurdi"
+                "bundle_id": "com.kurdi.sheikhismailalKurdi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359643655989:android:a5bcc0a2637d7aaea7667c",
+        "android_client_info": {
+          "package_name": "com.kurdi.sendnotification.sendnotification"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSzhWOqXs3N_VJa2-Z3mop378ujWcLz14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359643655989-cj9k2ntedohpuhvitev2bpspvfm53gmv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kurdi.sheikhismailalKurdi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359643655989:android:0c23cbb3289da008a7667c",
+        "android_client_info": {
+          "package_name": "com.kurdi.sheikhismailalkurdi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSzhWOqXs3N_VJa2-Z3mop378ujWcLz14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359643655989-cj9k2ntedohpuhvitev2bpspvfm53gmv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kurdi.sheikhismailalKurdi"
               }
             }
           ]

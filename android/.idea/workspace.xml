@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0447bae7-2fcb-4488-ac19-a7f9e80aeb7b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Dart_Packages.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../__ios/Runner/GoogleService-Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../__ios/Runner/GoogleService-Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/google-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/google-services.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/malas/bookapp/bookapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/malas/bookapp/bookapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookapp_android.iml" beforeDir="false" afterPath="$PROJECT_DIR$/nasheedapp_android.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assets/images/logo_media_black copy 2.png" beforeDir="false" afterPath="$PROJECT_DIR$/../assets/images/logo_media_black copy 2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assets/images/qubah1.png" beforeDir="false" afterPath="$PROJECT_DIR$/../assets/images/qubah1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assets/images/qubah2.png" beforeDir="false" afterPath="$PROJECT_DIR$/../assets/images/qubah2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bookapp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../nasheedapp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ios/Runner/GoogleService-Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Runner/GoogleService-Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/commenwidget/customAppBar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/commenwidget/customAppBar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/configuration/images.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/configuration/images.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/configuration/theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/configuration/theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/awradAndZker.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/contant/awradAndZker.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/azkarFiles.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/contant/azkarFiles.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/beadsCounterPage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/beadsPrivetCounterPage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/contactUs.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/files.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/contant/files.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/filesBurda.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/contant/filesBurda.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/filesMauled.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/filesYoutube.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/contant/filesYoutube.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/licensesTime.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/pdfViewerPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/contant/pdfViewerPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/contant/pdfViewerPageMauled.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/home/homepage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/home/homepage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/starting/splashScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/starting/splashScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test/widget_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../test/widget_test.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2uxxmSI7vyLv5sWcb4gG8g4FCPo" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "android.gradle.sync.needed": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0447bae7-2fcb-4488-ac19-a7f9e80aeb7b" name="Changes" comment="" />
+      <created>1743204187876</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743204187876</updated>
+    </task>
+    <servers />
+  </component>
+</project>

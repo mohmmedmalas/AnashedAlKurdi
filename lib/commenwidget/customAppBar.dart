@@ -3,10 +3,10 @@ import '../configuration/theme.dart';
 
 import '../configuration/images.dart';
 
-PreferredSize myAppBar({required String title, List<Widget>? actions ,Widget? leadingWidget ,context }) {
+PreferredSize myAppBar({required String title, List<Widget>? actions , Function? onTap ,Widget? leadingWidget ,context }) {
   return PreferredSize(
-    preferredSize: context != null && MediaQuery.of(context).orientation.name.toString() == "portrait" ?  Size.fromHeight(100.0) : Size.fromHeight(70.0) ,
-    child: CustomAppBar(title: title, actions: actions , leadingWidget: leadingWidget),
+    preferredSize: context != null && MediaQuery.of(context).orientation.name.toString() == "portrait" ?  Size.fromHeight(80.0) : Size.fromHeight(70.0) ,
+    child: CustomAppBar(title: title, actions: actions ,onTap: onTap , leadingWidget: leadingWidget),
   );
 }
 
@@ -14,8 +14,9 @@ class CustomAppBar extends StatelessWidget {
   final String? title;
   final List<Widget>? actions;
   final Widget? leadingWidget;
+  final Function? onTap;
 
-  const CustomAppBar({Key? key, this.title,this.leadingWidget, this.actions}) : super(key: key);
+  const CustomAppBar({Key? key, this.title,this.onTap,this.leadingWidget, this.actions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +55,17 @@ class CustomAppBar extends StatelessWidget {
           padding: const EdgeInsets.only(top: 20, left: 10, right: 10 , bottom: 20),
           child:
           AppBar(
-            // leading: leadingWidget,
-            actions: [
-              Image.asset(ImagePath.qubah2 , color: Theme_Information.Color_1,),
+            iconTheme: IconThemeData(color: Theme_Information.Color_1),
+            leading: leadingWidget,
+            actions: actions ??  [
+              InkWell(
+                  onTap:onTap == null ? null :  (){
+                    onTap!();
+
+                  },
+                  child: Image.asset(ImagePath.free_1 ,)),
+              // Image.asset(ImagePath.free_2 ,),
+              // Image.asset(ImagePath.qubah2 ,),
               SizedBox(width: 10,)
             ],
             title: Text(title!,
