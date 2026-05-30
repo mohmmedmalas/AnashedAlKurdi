@@ -8,6 +8,7 @@ import 'package:nasheedapp/contant/pdfViewerPage.dart';
 import '../commenwidget/customAppBar.dart';
 import '../configuration/images.dart';
 import '../configuration/theme.dart';
+import '../configuration/userService.dart';
 import '../model/generalFireBaseList.dart';
 // import 'package:intl/intl.dart';
 // import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -23,15 +24,33 @@ class _NasheedListPageState extends State<NasheedListPage> {
   List<GeneralFireBaseList> data = [] ;
   List<GeneralFireBaseList> dataLeadList = [] ;
   bool isSearchOpen = false ;
+  bool _isAdmin = false;
+
   TextEditingController search = TextEditingController();
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   Future.delayed(Duration.zero, () async {
+  //     data.clear();
+  //     await fetchDataFromFirestoreMentor();
+  //     dataLeadList = data ;
+  //     setState(() {});
+  //   });
+  // }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () async {
       data.clear();
       await fetchDataFromFirestoreMentor();
-      dataLeadList = data ;
+      dataLeadList = data;
+
+      // ADD THIS:
+      bool admin = await UserService.isCurrentUserSuperAdminAdmin();
+      _isAdmin = admin;
+
       setState(() {});
     });
   }
@@ -176,6 +195,8 @@ class _NasheedListPageState extends State<NasheedListPage> {
                              // title:item.name! ,
                            )));
                          },
+                         onLongPress: _isAdmin ? () => _confirmDelete(item) : null, // ADD
+
                        ),
                      );
                    }),
@@ -187,6 +208,140 @@ class _NasheedListPageState extends State<NasheedListPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _confirmDelete(GeneralFireBaseList item) async {
+    bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (_) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.delete, color: Colors.red),
+              SizedBox(width: 8),
+              Text('حذف القصيدة'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('هل أنت متأكد من حذف:'),
+              SizedBox(height: 8),
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.red.shade200),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      item.contentType == 'image'
+                          ? Icons.image
+                          : Icons.picture_as_pdf,
+                      color: Colors.red,
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        item.name ?? '',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'سيتم حذف الملف نهائياً ولا يمكن التراجع',
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text('إلغاء'),
+            ),
+            ElevatedButton.icon(
+              icon: Icon(Icons.delete, size: 16),
+              label: Text('حذف'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () => Navigator.pop(context, true),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (confirm != true) return;
+
+    // Show loading
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      // 1. Delete from Firestore
+      await FirebaseFirestore.instance
+          .collection('Nasheed')
+          .doc(item.id)
+          .delete();
+
+      // 2. Delete file from Firebase Storage
+      if (item.contentType == 'image' && item.imageUrl != null && item.imageUrl!.isNotEmpty) {
+        try {
+          final ref = FirebaseStorage.instance.refFromURL(item.imageUrl!);
+          await ref.delete();
+        } catch (e) {
+          print('Storage delete error: $e'); // non-fatal
+        }
+      } else if (item.filePdf != null && item.filePdf!.isNotEmpty) {
+        try {
+          final ref = FirebaseStorage.instance.refFromURL(item.filePdf!);
+          await ref.delete();
+        } catch (e) {
+          print('Storage delete error: $e'); // non-fatal
+        }
+      }
+
+      // 3. Remove from local list
+      setState(() {
+        data.removeWhere((d) => d.id == item.id);
+        dataLeadList.removeWhere((d) => d.id == item.id);
+      });
+
+      if (mounted) Navigator.pop(context); // close loading
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 8),
+              Text('تم حذف "${item.name}" بنجاح'),
+            ],
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      if (mounted) Navigator.pop(context); // close loading
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('خطأ في الحذف: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   InkWell buildInkWell(BuildContext context, GeneralFireBaseList item) {
@@ -214,18 +369,29 @@ class _NasheedListPageState extends State<NasheedListPage> {
   }
 
 
+  // List<GeneralFireBaseList> filterItem(String name) {
+  //   if (name.isEmpty) {
+  //     return dataLeadList;
+  //   } else {
+  //     String searched = normalise(name);
+  //     return dataLeadList.where((mentor) {
+  //       return (normalise(mentor.name!)).contains(searched) ;
+  //     }).toList();
+  //
+  //   }
+  // }
   List<GeneralFireBaseList> filterItem(String name) {
     if (name.isEmpty) {
       return dataLeadList;
     } else {
       String searched = normalise(name);
-      return dataLeadList.where((mentor) {
-        return (normalise(mentor.name!)).contains(searched) ;
+      return dataLeadList.where((item) {
+        bool matchesName = normalise(item.name ?? '').contains(searched);
+        bool matchesText = normalise(item.textContent ?? '').contains(searched);
+        return matchesName || matchesText;
       }).toList();
-
     }
   }
-
 
 
   String normalise(String input) => input
@@ -314,22 +480,73 @@ class _NasheedListPageState extends State<NasheedListPage> {
       .replaceAll('\u0623', '\u0627')
       .replaceAll('\u0625', '\u0627');
 
+  // Future fetchDataFromFirestoreMentor() async {
+  //   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //
+  //   try {
+  //     QuerySnapshot querySnapshot =
+  //     await firestore.collection("Nasheed").get();
+  //
+  //     if (querySnapshot.docs.isNotEmpty) {
+  //       for (QueryDocumentSnapshot document in querySnapshot.docs) {
+  //         Map<String, dynamic>? dataList = document.data() as Map<String, dynamic>?;
+  //         String? name = dataList?['name'] as String?;
+  //         String? id = dataList?['id'] as String?;
+  //         String? filePdf = dataList?['file_pdf'] as String?;
+  //
+  //         if (name != null && id != null && id != filePdf) {
+  //           data.add(GeneralFireBaseList(id: id , name:  name , filePdf: filePdf));
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching data: $e');
+  //   }
+  // }
   Future fetchDataFromFirestoreMentor() async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
     try {
-      QuerySnapshot querySnapshot =
-      await firestore.collection("Nasheed").get();
+      QuerySnapshot querySnapshot = await firestore.collection("Nasheed").get();
 
       if (querySnapshot.docs.isNotEmpty) {
         for (QueryDocumentSnapshot document in querySnapshot.docs) {
           Map<String, dynamic>? dataList = document.data() as Map<String, dynamic>?;
+
           String? name = dataList?['name'] as String?;
           String? id = dataList?['id'] as String?;
           String? filePdf = dataList?['file_pdf'] as String?;
+          String? imageUrl = dataList?['image_url'] as String?;       // ADD
+          String? contentType = dataList?['content_type'] as String?; // ADD
 
-          if (name != null && id != null && id != filePdf) {
-            data.add(GeneralFireBaseList(id: id , name:  name , filePdf: filePdf));
+          String? textContent = dataList?['text_content'] as String?; // ADD
+
+          List<WaslaItem>? items;
+          if (dataList?['items'] != null) {
+            items = (dataList!['items'] as List)
+                .map((i) => WaslaItem.fromMap(i as Map<String, dynamic>))
+                .toList();
+          }
+
+          if (name != null && id != null) {  // remove the "id != filePdf" condition
+            // data.add(GeneralFireBaseList(
+            //   id: id,
+            //   name: name,
+            //   filePdf: filePdf,
+            //   imageUrl: imageUrl,       // ADD
+            //   textContent: textContent,  // ADD
+            //   contentType: contentType, // ADD
+            // ));
+            data.add(
+              GeneralFireBaseList(
+                id: id,
+                name: name,
+                filePdf: filePdf,
+                imageUrl: imageUrl,
+                textContent: textContent,
+                contentType: contentType,
+                items: items, // ADD
+              ),
+            );
           }
         }
       }
@@ -337,6 +554,7 @@ class _NasheedListPageState extends State<NasheedListPage> {
       print('Error fetching data: $e');
     }
   }
+
 
 }
 

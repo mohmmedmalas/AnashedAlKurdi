@@ -29,14 +29,10 @@ import '../configuration/basePage.dart';
 import '../configuration/initializeCategoriesHelper.dart';
 import '../configuration/theme.dart';
 import '../configuration/userService.dart';
-import '../contant/awradAndZker.dart';
 // import '../contant/beadsCounterPage.dart';
 // import '../contant/beadsPrivetCounterPage.dart';
 // import '../contant/contactUs.dart';
-import '../contant/files.dart';
-import '../contant/filesBurda.dart';
 // import '../contant/filesMauled.dart';
-import '../contant/filesYoutube.dart';
 // import '../contant/licensesTime.dart';
 import '../contant/nasheedList.dart';
 import '../contant/nasheedListByCategory.dart';
@@ -73,14 +69,19 @@ class _DynamicHomePageState extends State<DynamicHomePage> {
 
   // bool _isAdmin = false;
   bool _isSuperAdmin = false;
+  bool _canUpload = false;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () async {
+    Future.delayed(const Duration(microseconds: 2), () async {
       final prefs = await SharedPreferences.getInstance();
       bool superAdmin = await UserService.isCurrentUserSuperAdmin();
       _isSuperAdmin = superAdmin ;
+
+      bool canUpload = await UserService.canCurrentUserUpload();
+      _canUpload = canUpload;
+
       setState(() {});
     });
   }
@@ -120,7 +121,7 @@ class _DynamicHomePageState extends State<DynamicHomePage> {
 
               // Slider
               Container(
-                height: size_H(210),
+                height: size_H(150),
                 child: ImageSlider(
                   imagePaths: [
                     ImagePath.tareqa,
@@ -311,7 +312,8 @@ class _DynamicHomePageState extends State<DynamicHomePage> {
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
-                    if(_isSuperAdmin)
+                    // if(_isSuperAdmin)
+                      if(_canUpload)
                     _buildDrawerItem(
                       icon: Icons.menu_book,
                       title: "ارسال قصيدة جديدة",

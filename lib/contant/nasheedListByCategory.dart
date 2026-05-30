@@ -113,27 +113,29 @@ class _NasheedListByCategoryPageState extends State<NasheedListByCategoryPage> {
                   ),
                 ),
              Expanded(
-               child: Column(
-                 children:  List.generate(data.length, (index) {
-                   final item = data[index];
-                   // return buildInkWell(context, item);
-                   return Card(
-                     color: Theme_Information.Color_1,
-                     child: ListTile(
+               child: SingleChildScrollView(
+                 child: Column(
+                   children:  List.generate(data.length, (index) {
+                     final item = data[index];
+                     // return buildInkWell(context, item);
+                     return Card(
+                       color: Theme_Information.Color_1,
+                       child: ListTile(
 
-                       title: Text("${item.name}", style: ourTextStyle(fontSize: MediaQuery.of(context).orientation.name.toString() == "portrait" ? 13 : 40)),
-                       trailing: Image.asset(ImagePath.qubah2),
-                       onTap: () {
-                         log("item ${item.toString()}");
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewerPage(
-                           pdfFile: item,
-                           // assetPath:item.filePdf! ,
-                           // title:item.name! ,
-                         )));
-                       },
-                     ),
-                   );
-                 }),
+                         title: Text("${item.name}", style: ourTextStyle(fontSize: MediaQuery.of(context).orientation.name.toString() == "portrait" ? 13 : 40)),
+                         trailing: Image.asset(ImagePath.qubah2),
+                         onTap: () {
+                           log("item ${item.toString()}");
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewerPage(
+                             pdfFile: item,
+                             // assetPath:item.filePdf! ,
+                             // title:item.name! ,
+                           )));
+                         },
+                       ),
+                     );
+                   }),
+                 ),
                ),
              )
             ],
@@ -168,15 +170,31 @@ class _NasheedListByCategoryPageState extends State<NasheedListByCategoryPage> {
   }
 
 
+  // List<GeneralFireBaseList> filterItem(String name) {
+  //   if (name.isEmpty) {
+  //     return dataLeadList;
+  //   } else {
+  //     String searched = normalise(name);
+  //     return dataLeadList.where((mentor) {
+  //       return (normalise(mentor.name!)).contains(searched) ;
+  //     }).toList();
+  //
+  //   }
+  // }
   List<GeneralFireBaseList> filterItem(String name) {
     if (name.isEmpty) {
       return dataLeadList;
     } else {
       String searched = normalise(name);
-      return dataLeadList.where((mentor) {
-        return (normalise(mentor.name!)).contains(searched) ;
-      }).toList();
+      return dataLeadList.where((item) {
+        // Search in name
+        bool matchesName = normalise(item.name ?? '').contains(searched);
 
+        // Search in text content (for text type nasheeds)
+        bool matchesText = normalise(item.textContent ?? '').contains(searched);
+
+        return matchesName || matchesText;
+      }).toList();
     }
   }
 
@@ -291,6 +309,54 @@ class _NasheedListByCategoryPageState extends State<NasheedListByCategoryPage> {
   //     print('Error fetching data: $e');
   //   }
   // }
+  ///
+//   Future<List<GeneralFireBaseList>> fetchDataByCategory(
+//       {required String categoryId})
+//   async {
+//     final FirebaseFirestore firestore = FirebaseFirestore.instance;
+//     List<GeneralFireBaseList> filteredData = [];
+//
+//     try {
+//       QuerySnapshot querySnapshot = await firestore
+//           .collection("Nasheed")
+//           .where("categories", arrayContains: categoryId)
+//           .get();
+//
+//       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+//         Map<String, dynamic>? dataList = doc.data() as Map<String, dynamic>?;
+//
+//         String? name = dataList?['name'] as String?;
+//         String? id = dataList?['id'] as String?;
+//         String? filePdf = dataList?['file_pdf'] as String?;
+//         print("querySnapshot.docs ${name}");
+//         print("querySnapshot.docs ${id}");
+//         print("querySnapshot.docs ${filePdf}");
+//         if (name != null && id != null && filePdf != null) {
+//           // filteredData.add(
+//           //   GeneralFireBaseList(id: id, name: name, filePdf: filePdf),
+//           // );
+//           // In fetchDataFromFirestoreMentor and fetchDataByCategory,
+// // replace the GeneralFireBaseList construction:
+//
+//           filteredData.add(
+//             GeneralFireBaseList(
+//               id: id,
+//               name: name,
+//               filePdf: dataList?['file_pdf'],
+//               imageUrl: dataList?['image_url'],       // ADD
+//               contentType: dataList?['content_type'], // ADD
+//             ),
+//           );
+//
+//         }
+//       }
+//     } catch (e) {
+//       print('Error fetching by category: $e');
+//     }
+//
+//     return filteredData;
+//   }
+///
   Future<List<GeneralFireBaseList>> fetchDataByCategory(
       {required String categoryId}) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -308,13 +374,40 @@ class _NasheedListByCategoryPageState extends State<NasheedListByCategoryPage> {
         String? name = dataList?['name'] as String?;
         String? id = dataList?['id'] as String?;
         String? filePdf = dataList?['file_pdf'] as String?;
-        print("querySnapshot.docs ${name}");
-        print("querySnapshot.docs ${id}");
-        print("querySnapshot.docs ${filePdf}");
-        if (name != null && id != null && filePdf != null) {
+        String? imageUrl = dataList?['image_url'] as String?;       // ADD
+        String? contentType = dataList?['content_type'] as String?; // ADD
+        String? textContent = dataList?['text_content'] as String?; // ADD
+
+        List<WaslaItem>? items;
+        if (dataList?['items'] != null) {
+          items = (dataList!['items'] as List)
+              .map((i) => WaslaItem.fromMap(i as Map<String, dynamic>))
+              .toList();
+        }
+
+        if (name != null && id != null) {
+          // filteredData.add(
+          //   GeneralFireBaseList(
+          //     id: id,
+          //     name: name,
+          //     filePdf: filePdf,
+          //     imageUrl: imageUrl,       // ADD
+          //     textContent: textContent,  // ADD
+          //     contentType: contentType, // ADD
+          //   ),
+          // );
           filteredData.add(
-            GeneralFireBaseList(id: id, name: name, filePdf: filePdf),
+            GeneralFireBaseList(
+              id: id,
+              name: name,
+              filePdf: filePdf,
+              imageUrl: imageUrl,
+              textContent: textContent,
+              contentType: contentType,
+              items: items, // ADD
+            ),
           );
+
         }
       }
     } catch (e) {
@@ -323,7 +416,6 @@ class _NasheedListByCategoryPageState extends State<NasheedListByCategoryPage> {
 
     return filteredData;
   }
-
 }
 
 

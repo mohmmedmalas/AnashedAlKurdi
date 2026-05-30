@@ -59,7 +59,7 @@ class _ImageSliderState extends State<ImageSlider> {
                   itemCount: widget.imagePaths.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      height: size_H(210),
+                      height: size_H(150),
                       child: Image.asset(
                         widget.imagePaths[index],
                         width: size_W(350),

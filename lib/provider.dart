@@ -1,96 +1,8 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-//
-// import 'model/generalFireBaseList.dart';
-//
-// // class ActiveFileService extends ChangeNotifier {
-// //   GeneralFireBaseList? _activeFile;
-// //   GeneralFireBaseList? get activeFile => _activeFile;
-// //
-// //   bool _hasShownAlert = false;
-// //
-// //   ActiveFileService() {
-// //     _listenToActiveFile();
-// //   }
-// //
-// //   void _listenToActiveFile() {
-// //     FirebaseFirestore.instance
-// //         .collection('ActiveFiles')
-// //         .doc('current')
-// //         .snapshots()
-// //         .listen((snapshot) {
-// //       if (snapshot.exists) {
-// //         final newFile = GeneralFireBaseList.fromMap(snapshot.data()!);
-// //         if (_activeFile?.id != newFile.id) {
-// //           _activeFile = newFile;
-// //           _hasShownAlert = false; // Reset alert for new file
-// //           notifyListeners();
-// //         }
-// //       }
-// //     });
-// //   }
-// //
-// //   bool get shouldShowAlert => !_hasShownAlert;
-// //
-// //   void markAlertShown() {
-// //     _hasShownAlert = true;
-// //   }
-// // }
-// ///
-// import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-//
-// class ActiveFileService extends ChangeNotifier {
-//   GeneralFireBaseList? _activeFile;
-//   bool _hasShownAlert = false;
-//   bool _isMinimized = false; // ✅ this is the only flag now
-//
-//   GeneralFireBaseList? get activeFile => _activeFile;
-//   bool get shouldShowAlert => !_hasShownAlert;
-//   bool get isMinimized => _isMinimized;
-//
-//   ActiveFileService() {
-//     _listenToActiveFile();
-//   }
-//
-//   void _listenToActiveFile() {
-//     FirebaseFirestore.instance
-//         .collection('ActiveFiles')
-//         .doc('current')
-//         .snapshots()
-//         .listen((snapshot) {
-//       if (snapshot.exists) {
-//         final newFile = GeneralFireBaseList.fromMap(snapshot.data()!);
-//         if (_activeFile?.id != newFile.id) {
-//           _activeFile = newFile;
-//           _hasShownAlert = false;
-//           _isMinimized = false; // ✅ reset on new file push
-//           notifyListeners();
-//         }
-//       }
-//     });
-//   }
-//
-//   void markAlertShown() {
-//     _hasShownAlert = true;
-//   }
-//
-//   void minimize() {
-//     _isMinimized = true;
-//     notifyListeners();
-//   }
-//
-//   void restore() {
-//     _isMinimized = false;
-//     notifyListeners();
-//   }
-// }
-//
-
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'configuration/theme.dart';
 import 'configuration/userService.dart';
@@ -114,31 +26,68 @@ class ActiveFileService extends ChangeNotifier {
     _listenToActiveFile();
   }
 
+  // void _listenToActiveFile() {
+  //   FirebaseFirestore.instance
+  //       .collection('ActiveFiles')
+  //       .doc('current')
+  //       .snapshots()
+  //       .listen((snapshot) {
+  //     if (snapshot.exists) {
+  //       final newFile = GeneralFireBaseList.fromMap(snapshot.data()!);
+  //
+  //       // If it's a different file, show alert again
+  //       if (_activeFile?.id != newFile.id) {
+  //         _activeFile = newFile;
+  //         _hasShownAlertThisSession = false; // Reset for new file
+  //         _isMinimized = false;
+  //         notifyListeners();
+  //       }
+  //     } else {
+  //       // No active file
+  //       _activeFile = null;
+  //       _isMinimized = false;
+  //       notifyListeners();
+  //     }
+  //   });
+  // }
   void _listenToActiveFile() {
     FirebaseFirestore.instance
         .collection('ActiveFiles')
         .doc('current')
         .snapshots()
-        .listen((snapshot) {
+        .listen((snapshot) async {
       if (snapshot.exists) {
         final newFile = GeneralFireBaseList.fromMap(snapshot.data()!);
 
-        // If it's a different file, show alert again
+        // NEW: get current user uid
+        final prefs = await SharedPreferences.getInstance();
+        final currentUid = prefs.getString('user_uid') ?? '';
+
+        // NEW: get who pushed it
+        final pushedByUid = snapshot.data()?['pushed_by_uid'] ?? '';
+        print("pushed_by_uid: $pushedByUid");
+        print("currentUid: $currentUid");
+        // If it's a different file AND current user is not the one who pushed it
         if (_activeFile?.id != newFile.id) {
           _activeFile = newFile;
-          _hasShownAlertThisSession = false; // Reset for new file
           _isMinimized = false;
+
+          // NEW: don't show alert if YOU pushed it
+          if (pushedByUid == currentUid) {
+            _hasShownAlertThisSession = true; // skip alert
+          } else {
+            _hasShownAlertThisSession = false; // show alert
+          }
+
           notifyListeners();
         }
       } else {
-        // No active file
         _activeFile = null;
         _isMinimized = false;
         notifyListeners();
       }
     });
   }
-
   void markAlertShown() {
     _hasShownAlertThisSession = true;
     notifyListeners();
@@ -195,8 +144,113 @@ class _BasePageState extends State<BasePage> {
     }
   }
 
+  // void _showNewFileAlert(ActiveFileService service) {
+  //   final file = service.activeFile!;
+  //
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (_) => Directionality(
+  //       textDirection: TextDirection.rtl,
+  //       child: AlertDialog(
+  //         title: Row(
+  //           children: [
+  //             Icon(Icons.new_releases, color: Theme_Information.Primary_Color, size: 28),
+  //             SizedBox(width: 10),
+  //             Text("قصيدة جديدة"),
+  //           ],
+  //         ),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               "تم نشر قصيدة جديدة:",
+  //               style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+  //             ),
+  //             SizedBox(height: 10),
+  //             Container(
+  //               padding: EdgeInsets.all(12),
+  //               decoration: BoxDecoration(
+  //                 color: Theme_Information.Primary_Color.withOpacity(0.1),
+  //                 borderRadius: BorderRadius.circular(8),
+  //               ),
+  //               child: Row(
+  //                 children: [
+  //                   Icon(Icons.picture_as_pdf,
+  //                       color: Theme_Information.Primary_Color,
+  //                       size: 32),
+  //                   SizedBox(width: 12),
+  //                   Expanded(
+  //                     child: Text(
+  //                       file.name??"",
+  //                       style: TextStyle(
+  //                         fontSize: 16,
+  //                         fontWeight: FontWeight.bold,
+  //                         color: Theme_Information.Primary_Color,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             SizedBox(height: 16),
+  //             Text(
+  //               "هل تريد عرضها الآن؟",
+  //               style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+  //             ),
+  //           ],
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             child: Text("لاحقاً"),
+  //             onPressed: () {
+  //               service.markAlertShown();
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           ElevatedButton.icon(
+  //             icon: Icon(Icons.visibility, size: 18),
+  //             label: Text("عرض الآن"),
+  //             style: ElevatedButton.styleFrom(
+  //               backgroundColor: Theme_Information.Primary_Color,
+  //               foregroundColor: Colors.white,
+  //               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+  //             ),
+  //             onPressed: () {
+  //               service.markAlertShown();
+  //               Navigator.of(context).pop();
+  //               Navigator.of(context).push(MaterialPageRoute(
+  //                 builder: (_) => PdfViewerPage(pdfFile: file),
+  //               ));
+  //             },
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
   void _showNewFileAlert(ActiveFileService service) {
     final file = service.activeFile!;
+    final contentType = file.contentType ?? 'pdf';
+
+    IconData typeIcon = contentType == 'image'
+        ? Icons.image
+        : contentType == 'text'
+        ? Icons.text_fields
+        : Icons.picture_as_pdf;
+
+    Color typeColor = contentType == 'image'
+        ? Colors.blue
+        : contentType == 'text'
+        ? Colors.green
+        : Colors.red;
+
+    String typeLabel = contentType == 'image'
+        ? 'صورة'
+        : contentType == 'text'
+        ? 'نص'
+        : 'PDF';
 
     showDialog(
       context: context,
@@ -204,11 +258,12 @@ class _BasePageState extends State<BasePage> {
       builder: (_) => Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Row(
             children: [
-              Icon(Icons.new_releases, color: Theme_Information.Primary_Color, size: 28),
+              Icon(Icons.new_releases, color: Theme_Information.Primary_Color, size: 26),
               SizedBox(width: 10),
-              Text("قصيدة جديدة"),
+              Text('قصيدة جديدة'),
             ],
           ),
           content: Column(
@@ -216,57 +271,54 @@ class _BasePageState extends State<BasePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "تم نشر قصيدة جديدة:",
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                'تم نشر قصيدة جديدة:',
+                style: TextStyle(fontSize: 13, color: Colors.grey[600]),
               ),
               SizedBox(height: 10),
+
+              // Nasheed preview card
+              // Replace the nasheed preview card with this simple version:
               Container(
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Theme_Information.Primary_Color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  color: Theme_Information.Primary_Color.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Theme_Information.Primary_Color.withOpacity(0.3)),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.picture_as_pdf,
-                        color: Theme_Information.Primary_Color,
-                        size: 32),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        file.name??"",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Theme_Information.Primary_Color,
-                        ),
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  file.name ?? '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
                 ),
               ),
-              SizedBox(height: 16),
+
+              SizedBox(height: 14),
               Text(
-                "هل تريد عرضها الآن؟",
-                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                'هل تريد عرضها الآن؟',
+                style: TextStyle(fontSize: 13, color: Colors.grey[700]),
               ),
             ],
           ),
           actions: [
             TextButton(
-              child: Text("لاحقاً"),
+              child: Text('لاحقاً', style: TextStyle(color: Colors.grey)),
               onPressed: () {
                 service.markAlertShown();
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton.icon(
-              icon: Icon(Icons.visibility, size: 18),
-              label: Text("عرض الآن"),
+              icon: Icon(Icons.visibility, size: 16),
+              label: Text('عرض الآن'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme_Information.Primary_Color,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               onPressed: () {
                 service.markAlertShown();

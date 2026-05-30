@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nasheedapp/configuration/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../contant/pdfViewerPage.dart';
@@ -38,30 +39,133 @@ class _BasePageState extends State<BasePage> {
     }
   }
 
+  // void _showNewFileAlert(ActiveFileService service) {
+  //   final file = service.activeFile!;
+  //   service.markAlertShown();
+  //
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => AlertDialog(
+  //       title: const Text("تنبيه"),
+  //       content: Text("تم نشر قصيدة جديدة: ${file.name}"),
+  //       actions: [
+  //         TextButton(
+  //           child: const Text("عرض"),
+  //           onPressed: () {
+  //             Navigator.of(context).pop();
+  //             Navigator.of(context).push(MaterialPageRoute(
+  //               builder: (_) => PdfViewerPage(pdfFile: file),
+  //             ));
+  //           },
+  //         ),
+  //         TextButton(
+  //           child: const Text("لاحقاً"),
+  //           onPressed: () => Navigator.of(context).pop(),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
   void _showNewFileAlert(ActiveFileService service) {
     final file = service.activeFile!;
-    service.markAlertShown();
+    final contentType = file.contentType ?? 'pdf';
+
+    IconData typeIcon = contentType == 'image'
+        ? Icons.image
+        : contentType == 'text'
+        ? Icons.text_fields
+        : Icons.picture_as_pdf;
+
+    Color typeColor = contentType == 'image'
+        ? Colors.blue
+        : contentType == 'text'
+        ? Colors.green
+        : Colors.red;
+
+    String typeLabel = contentType == 'image'
+        ? 'صورة'
+        : contentType == 'text'
+        ? 'نص'
+        : 'PDF';
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("تنبيه"),
-        content: Text("تم نشر قصيدة جديدة: ${file.name}"),
-        actions: [
-          TextButton(
-            child: const Text("عرض"),
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => PdfViewerPage(pdfFile: file),
-              ));
-            },
+      barrierDismissible: false,
+      builder: (_) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Row(
+            children: [
+              Icon(Icons.new_releases, color: Theme_Information.Primary_Color, size: 26),
+              SizedBox(width: 10),
+              Text('قصيدة جديدة'),
+            ],
           ),
-          TextButton(
-            child: const Text("لاحقاً"),
-            onPressed: () => Navigator.of(context).pop(),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'تم نشر قصيدة جديدة:',
+                style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+              ),
+              SizedBox(height: 10),
+
+              // Nasheed preview card
+// Replace the nasheed preview card with this simple version:
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme_Information.Primary_Color.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Theme_Information.Primary_Color.withOpacity(0.3)),
+                ),
+                child: Text(
+                  file.name ?? '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 14),
+              Text(
+                'هل تريد عرضها الآن؟',
+                style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+              ),
+            ],
           ),
-        ],
+          actions: [
+            TextButton(
+              child: Text('لاحقاً', style: TextStyle(color: Colors.grey)),
+              onPressed: () {
+                service.markAlertShown();
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton.icon(
+              icon: Icon(Icons.visibility, size: 16),
+              label: Text('عرض الآن'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme_Information.Primary_Color,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                service.markAlertShown();
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => PdfViewerPage(pdfFile: file),
+                ));
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -110,11 +214,15 @@ class _BasePageState extends State<BasePage> {
                 Positioned(
                   bottom: 0,
                   right: 0,
-                  child: FloatingActionButton.extended(
+                  child: // In the expanded FAB section, replace the icon:
+                  FloatingActionButton.extended(
                     heroTag: "main_fab",
-                    // backgroundColor: Colors.deepPurple,
-                    icon: const Icon(Icons.picture_as_pdf),
-                    label: const Text("عرض القصيدة"),
+                    // backgroundColor: Theme_Information.Primary_Color,
+                    icon: Icon(Icons.menu_book, color: Colors.black), // fixed icon
+                    label: const Text(
+                      'عرض القصيدة',
+                      style: TextStyle(color: Colors.black),
+                    ),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => PdfViewerPage(pdfFile: file),
