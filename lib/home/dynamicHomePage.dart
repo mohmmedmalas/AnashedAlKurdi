@@ -24,6 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../commenwidget/boxesHome.dart';
 import '../commenwidget/boxesHomeOneLine.dart';
 import '../commenwidget/customAppBar.dart';
+import '../commenwidget/deleteAccountButton.dart';
 import '../commenwidget/imageSlider.dart';
 import '../configuration/basePage.dart';
 import '../configuration/initializeCategoriesHelper.dart';
@@ -373,6 +374,7 @@ class _DynamicHomePageState extends State<DynamicHomePage> {
                     ),
 
 
+                    DeleteAccountButton(),
                     // ElevatedButton(
                     //   onPressed: () {
                     //     InitializeCategoriesHelper.safeInitialize(context);
