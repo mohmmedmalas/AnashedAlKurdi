@@ -53,6 +53,42 @@ class _AuthPageState extends State<AuthPage> {
   bool _obscurePassword = true;
   String _verificationId = '';
 
+  bool _guestModeEnabled = false; // ADD THIS
+
+  @override
+  void initState() {
+    super.initState();
+    _checkGuestMode(); // ADD THIS
+  }
+
+  // ADD THIS METHOD
+  Future<void> _checkGuestMode() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('app_settings')
+          .doc('admin')
+          .get();
+      if (mounted) {
+        setState(() {
+          _guestModeEnabled = doc.data()?['guest_mode_enabled'] == true;
+        });
+      }
+    } catch (_) {}
+  }
+
+  // ADD THIS METHOD
+  Future<void> _continueAsGuest() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_guest', true);
+    await prefs.setBool('is_logged_in', false);
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DynamicHomePage()),
+      );
+    }
+  }
+
   @override
   void dispose() {
     _phoneController.dispose();
@@ -570,6 +606,24 @@ class _AuthPageState extends State<AuthPage> {
                             : Text(
                           _isRegistering ? 'إرسال رمز التحقق' : 'تسجيل الدخول',
                           style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+
+                  if (_guestModeEnabled && !_codeSent) ...[
+                    SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: _continueAsGuest,
+                        child: Text(
+                          'تصفح بدون تسجيل',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 15,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       ),
                     ),
